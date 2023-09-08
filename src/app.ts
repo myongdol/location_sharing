@@ -6,6 +6,7 @@ const form = document.querySelector('form')!;
 const addressInput = document.getElementById('address')! as HTMLInputElement;
 const GoogleAPI = process.env.GOOGLE_API_KEY;
 
+
 type GoogleGeoType = {
     results: { geometry: { location: {lat: number, lng: number} } }[];
     status: 'OK' | 'ZERO_RESULTS';
@@ -25,6 +26,12 @@ function 주소검색핸들러(event: Event) {
                 throw new Error('위치정보를 가져올수 없습니다')
             }
             const coordinates = response.data.results[0].geometry.location;
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: coordinates,
+                zoom:10
+            });
+
+            new google.maps.Marker({position: coordinates, map: map})
         })
         .catch(err => {
             alert(err.message);
